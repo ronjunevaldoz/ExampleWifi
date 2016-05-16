@@ -22,7 +22,6 @@ namespace ExampleWifi
         {
             h.Stop();
             populateConnections();
-
         }
 
         public void populateConnections()
@@ -38,8 +37,8 @@ namespace ExampleWifi
 
         private void btnStart_Click(object sender, EventArgs e)
         {
-            h.create(txtSSID.Text , txtKEY.Text);
-            h.start();
+            h.Create(txtSSID.Text , txtKEY.Text);
+            h.Start();
             populateConnections();
             lblMessage.Text = h.Message;
         }

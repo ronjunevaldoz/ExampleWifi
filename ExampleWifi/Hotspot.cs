@@ -15,7 +15,7 @@ namespace ExampleWifi
         private dynamic everyConnections = null;
         private bool hasNetSharingManager = false;
 
-        private string message = "";
+        public string Message { get; set; } = "";
 
         public Hotspot()
         {
@@ -33,7 +33,7 @@ namespace ExampleWifi
 
             if (netSharingManager == null)
             {
-                this.message = "HNetCfg.HNetShare.1 was not found! \n";
+                this.Message = "HNetCfg.HNetShare.1 was not found! \n";
                 hasNetSharingManager = true;
             } else
             {
@@ -42,7 +42,7 @@ namespace ExampleWifi
             
             if (netSharingManager.SharingInstalled == false)
             {
-                this.message = "Sharing on this platform is not available \n";
+                this.Message = "Sharing on this platform is not available \n";
                 hasNetSharingManager = false;
             } else
             {
@@ -88,7 +88,7 @@ namespace ExampleWifi
                 if (connectionProp.Name == pubConnectionName) // Public Connection Name
                 {
                     hasCon = true;
-                    this.message += String.Format("Setting ICS Public {0} on connection: {1} \n",isEnabled, pubConnectionName);
+                    this.Message += String.Format("Setting ICS Public {0} on connection: {1} \n",isEnabled, pubConnectionName);
                     if (isEnabled)
                     {
                         everyConnection.EnableSharing(0);
@@ -101,7 +101,7 @@ namespace ExampleWifi
                 if (connectionProp.Name == priConnectionName) // Private Connection Name
                 {
                     hasCon = true;
-                    this.message += String.Format("Setting ICS Private {0} on connection: {1} \n", isEnabled, priConnectionName);
+                    this.Message += String.Format("Setting ICS Private {0} on connection: {1} \n", isEnabled, priConnectionName);
                     if (isEnabled)
                     {
                         everyConnection.EnableSharing(1);
@@ -115,17 +115,17 @@ namespace ExampleWifi
 
             if (!hasCon)
             {
-                this.message += "No connection found!";
+                this.Message += "No connection found!";
             }
         }
 
 
-        public void start()
+        public void Start()
         {
             ps.Arguments = "wlan start hosted network";
             Execute(ps);
         }
-        public void create(string ssid, string key)
+        public void Create(string ssid, string key)
         {
             ps.Arguments = String.Format("wlan set hostednetwork mode=allow ssid={0} key={1}", ssid,key);
             Execute(ps);
@@ -135,35 +135,25 @@ namespace ExampleWifi
             ps.Arguments = "wlan stop hosted network";
             Execute(ps);
         }
-        public string Message
-        {
-            get
-            {
-                return this.message;
-            }
-            set
-            {
-                this.message = value;
-            }
-        }
-        private void Execute(ProcessStartInfo ps)
+        private bool Execute(ProcessStartInfo ps)
         {
             bool isExecuted = false;
             try
             {
                 using (Process p =  Process.Start(ps))
                 {
-                    message += p.StandardOutput.ReadToEnd() + "\n";
+                    Message += p.StandardOutput.ReadToEnd() + "\n";
                     p.WaitForExit();
                     isExecuted = true;
                 }
             }
             catch (Exception e)
             {
-                message = "";
-                message += e.Message;
+                Message = "";
+                Message += e.Message;
                 isExecuted = false;
             }
+            return isExecuted;
         }
 
     }
