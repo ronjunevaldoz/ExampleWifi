@@ -26,6 +26,5 @@ h.ShareInternet("Ethernet", LOCAL AREA NETWORK NAME, false); // disable internet
 ```
 ### Stop the created virtual wifi adapter
 ```C#
-h.ShareInternet("Ethernet", LOCAL AREA NETWORK NAME, true); // enable internet sharing from source connectiom
-h.ShareInternet("Ethernet", LOCAL AREA NETWORK NAME, false); // disable internet sharing from source connectiom
+h.Stop();
 ```
